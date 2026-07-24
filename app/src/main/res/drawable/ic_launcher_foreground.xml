@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer rectangle representing the frame -->
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M30,30h48v48h-48z" />
+    <!-- Stylized 'T' with merging effect -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,35h38v8h-15v30h-8v-30h-15z" />
+    <!-- Accent shape symbolizing the phantom effect -->
+    <path
+        android:fillColor="#B3FFFFFF"
+        android:pathData="M58,50l10,10l-10,10z" />
+</vector>

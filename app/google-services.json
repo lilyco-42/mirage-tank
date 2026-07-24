@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398985764157",
+    "project_id": "device-streaming-e85d41c6",
+    "storage_bucket": "device-streaming-e85d41c6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398985764157:android:98a6863e33fa8bcf0fb954",
+        "android_client_info": {
+          "package_name": "com.lilyco.timi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC24S1CuwsS8rtJS-qQg9o8A4CsxuOrDpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
