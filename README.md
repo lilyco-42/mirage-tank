@@ -22,8 +22,6 @@ rust/
 │   │   ├── main.rs    # CLI entry point (old version)
 │   │   └── demo-cli.rs# CLI binary "mirage-cli"
 │   └── Cargo.toml
-├── http_demo/         # HTTP server demo using tiny_http
-│   └── src/main.rs
 ├── app/               # Android app (Jetpack Compose)
 │   └── src/main/java/com/lilyco/timi/MainActivity.kt
 ├── build.gradle.kts   # Android Gradle build (root)
