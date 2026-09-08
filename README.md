@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="docs/banner.svg" width="720" alt="banner">
+</div>
+
 # Mirage Tank (幻影坦克)
 
 Create illusion images that show different content on different backgrounds — one image visible on dark backgrounds, another on light backgrounds.
