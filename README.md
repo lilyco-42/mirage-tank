@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/lilyco-42/mirage-tank/master/docs/logo.png" alt="mirage-tank" width="200">
+</p>
+
 <div align="center">
   <img src="docs/banner.svg" width="720" alt="banner">
 </div>
