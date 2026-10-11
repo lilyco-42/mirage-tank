@@ -13,7 +13,7 @@ import urllib.request
 import unittest
 
 from fixture import fixtures
-from test_studio import assert_picture
+from image_assertions import assert_picture
 
 if os.environ.get('GITHUB_ACTIONS') != 'true':
     raise SystemExit('Package acceptance only runs in GitHub Actions')
