@@ -1,0 +1,4 @@
+# Keep the vendored official shadcn source byte-identical on Windows and Linux.
+desktop/ui/src/components/ui/*.tsx text eol=lf
+desktop/ui/src/components/ui/LICENSE.md text eol=lf
+desktop/ui/src/shadcn-sources.json text eol=lf

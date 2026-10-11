@@ -1,10 +1,10 @@
 name: Mirage Desktop
 on:
   pull_request:
-    paths: ['desktop/**', 'demo/**', '.github/workflows/desktop.yml']
+    paths: ['desktop/**', 'demo/**', '.gitattributes', '.github/workflows/desktop.yml']
   push:
     branches: [master]
-    paths: ['desktop/**', 'demo/**', '.github/workflows/desktop.yml']
+    paths: ['desktop/**', 'demo/**', '.gitattributes', '.github/workflows/desktop.yml']
   workflow_dispatch:
 permissions:
   contents: read
