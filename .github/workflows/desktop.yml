@@ -1,0 +1,120 @@
+name: Mirage Desktop
+on:
+  pull_request:
+    paths: ['desktop/**', 'demo/**', '.github/workflows/desktop.yml']
+  push:
+    branches: [master]
+    paths: ['desktop/**', 'demo/**', '.github/workflows/desktop.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mirage-desktop-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: demo -> target
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build actual shadcn workspace
+        working-directory: desktop/ui
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Test original Rust and Android JNI, build real CLI
+        working-directory: demo
+        run: |
+          cargo test
+          cargo build --release --locked --bin demo-cli
+      - name: Install app and CI verification dependencies
+        run: python -m pip install -r desktop/requirements.txt httpx==0.28.1 pillow==11.3.0 pyinstaller==6.16.0
+      - name: Include built engine
+        shell: bash
+        run: |
+          mkdir -p desktop/bin
+          EXT=""; if [ "$RUNNER_OS" = "Windows" ]; then EXT=".exe"; fi
+          cp "demo/target/release/demo-cli${EXT}" "desktop/bin/demo-cli${EXT}"
+      - name: Real compositing, export, cancellation and local boundaries
+        working-directory: desktop
+        run: python -m unittest discover -s tests -v
+      - name: Browser desktop, tablet and phone acceptance
+        if: runner.os == 'Linux'
+        working-directory: desktop
+        shell: bash
+        run: |
+          python tests/fixture.py
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+          python -m uvicorn studio.app:create_app --factory --host 127.0.0.1 --port 8043 > /tmp/mirage-ui.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" || true' EXIT
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:8043/ >/dev/null && break || sleep .25; done
+          node tests/ui.mjs
+      - name: Freeze double-click app and collect actual dependency notices
+        working-directory: desktop
+        run: |
+          python packaging/build-app.py
+          python tests/notices.py
+      - name: Actual frozen application processing
+        working-directory: desktop
+        run: python tests/bundle_smoke.py dist/Lain42-Mirage-Studio/Lain42-Mirage-Studio${{ runner.os == 'Windows' && '.exe' || '' }}
+      - name: Manifest, licenses and portable ZIP
+        working-directory: desktop
+        run: python packaging/archive.py
+      - name: Windows native runtime and installer tools
+        if: runner.os == 'Windows'
+        working-directory: desktop
+        shell: pwsh
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          python tests/fixture.py
+          choco install nsis -y --no-progress
+          Invoke-WebRequest 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile webview2-bootstrap.exe
+          $signature = Get-AuthenticodeSignature webview2-bootstrap.exe
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Microsoft Corporation') { throw 'Invalid WebView2 bootstrap signature' }
+          $setup = Start-Process ./webview2-bootstrap.exe -ArgumentList '/silent','/install' -Wait -PassThru -WindowStyle Hidden
+          if ($setup.ExitCode -notin 0,3010) { throw "WebView2 install failed: $($setup.ExitCode)" }
+      - name: Real WebView2 preview, export and normal close
+        if: runner.os == 'Windows'
+        working-directory: desktop
+        run: node tests/desktop_smoke.mjs dist/Lain42-Mirage-Studio/Lain42-Mirage-Studio.exe
+      - name: Installation EXE, real installed processing and safe uninstall
+        if: runner.os == 'Windows'
+        working-directory: desktop
+        run: |
+          python packaging/windows-installer.py
+          python tests/installer_smoke.py
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mirage-evidence-${{ runner.os }}-${{ github.sha }}
+          if-no-files-found: warn
+          path: desktop/evidence/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lain42-mirage-studio-${{ runner.os }}-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            desktop/dist/*.zip
+            desktop/dist/*.sha256
+            desktop/dist/*-setup.exe

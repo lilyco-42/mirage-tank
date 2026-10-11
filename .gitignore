@@ -18,3 +18,17 @@ Thumbs.db
 
 # Misc
 .artifacts/
+
+# Desktop generated outputs are created only in GitHub Actions.
+desktop/frontend/
+desktop/bin/
+desktop/dist/
+desktop/build/
+desktop/evidence/
+desktop/ui/node_modules/
+desktop/node_modules/
+*.spec
+__pycache__/
+desktop/THIRD-PARTY-NOTICES.json
+desktop/tests/hidden.png
+desktop/tests/surface.png
