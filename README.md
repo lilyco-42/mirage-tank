@@ -10,11 +10,11 @@
 
 Create illusion images that show different content on different backgrounds — one image visible on dark backgrounds, another on light backgrounds.
 
-## Desktop studio（开发中，待 Actions 验收）
+## Desktop studio · 无需命令行
 
 `desktop/` 新增无需命令行的 Lain42 幻影工坊：两图选择、强度滑块、真实黑白背景对比、透明 PNG / ZIP 导出、取消和工作区删除。Windows WebView2 安装 EXE / 便携 ZIP，Linux 本机浏览器 ZIP。原 Android 应用和 Rust 核心算法保持不变。
 
-当前尚未发布桌面安装包。所有编译、构建、测试及安装验收只在 [GitHub Actions](https://github.com/lilyco-42/mirage-tank/actions/workflows/desktop.yml) 运行；不要求用户在本机编译。交付限制和运行说明见 [桌面说明](desktop/README.md)。
+[下载 Windows 安装 EXE / ZIP 或 Linux ZIP](https://github.com/lilyco-42/mirage-tank/releases/tag/mirage-studio-v0.1.0-59f4142602c5)。完整包免费，解压后双击使用。Windows 需要 WebView2，安装器暂未签名；Linux 使用 Ubuntu 24.04+ x64 本机浏览器。所有编译、构建、测试及安装验收只在 [GitHub Actions](https://github.com/lilyco-42/mirage-tank/actions/runs/38202794312) 运行；不要求用户在本机编译。交付限制和运行说明见 [桌面说明](desktop/README.md)。
 
 ## How It Works
 
@@ -29,18 +29,17 @@ result = foreground * alpha + background * (1 - alpha)
 ## Project Structure
 
 ```
-rust/
-├── demo/              # Rust library + CLI binary
-│   ├── src/
-│   │   ├── lib.rs     # Core algorithm + JNI exports for Android
-│   │   ├── main.rs    # CLI entry point (old version)
-│   │   └── demo-cli.rs# CLI binary "mirage-cli"
-│   └── Cargo.toml
-├── app/               # Android app (Jetpack Compose)
-│   └── src/main/java/com/lilyco/timi/MainActivity.kt
-├── build.gradle.kts   # Android Gradle build (root)
-├── settings.gradle.kts
-└── gradle.properties
+demo/                 # Rust library + actual demo-cli binary
+├── src/lib.rs        # Original core algorithm + Android JNI
+├── src/main.rs       # demo-cli; PNG/JPEG inputs, optional intensity
+└── Cargo.toml
+desktop/              # FastAPI + WebView2 + shadcn workspace
+├── studio/           # Local API and fixed CLI adapter
+├── ui/               # React / shadcn interface
+├── packaging/        # GitHub Actions-only EXE / ZIP packaging
+└── tests/            # Real engine, preview, install/uninstall evidence
+app/                  # Original Android app (Jetpack Compose)
+.github/workflows/desktop.yml
 ```
 
 ## Usage
@@ -57,7 +56,7 @@ demo-cli hidden.jpg surface.jpg output.png 100 128
 
 ### Android App
 
-Open the `app/` directory in Android Studio, build and run. The app provides:
+The original `app/` Android project remains independent of the desktop release. Its interface provides:
 - Image picker for hidden & surface images
 - Real-time preview with black/white background toggle
 - Adjustable intensity sliders
