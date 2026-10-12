@@ -14,7 +14,7 @@ Create illusion images that show different content on different backgrounds — 
 
 `desktop/` 新增无需命令行的 Lain42 幻影工坊：两图选择、强度滑块、真实黑白背景对比、透明 PNG / ZIP 导出、取消和工作区删除。Windows WebView2 安装 EXE / 便携 ZIP，Linux 本机浏览器 ZIP。原 Android 应用和 Rust 核心算法保持不变。
 
-[下载 Windows 安装 EXE / ZIP 或 Linux ZIP](https://github.com/lilyco-42/mirage-tank/releases/tag/mirage-studio-v0.1.0-59f4142602c5)。完整包免费，解压后双击使用。Windows 需要 WebView2，安装器暂未签名；Linux 使用 Ubuntu 24.04+ x64 本机浏览器。所有编译、构建、测试及安装验收只在 [GitHub Actions](https://github.com/lilyco-42/mirage-tank/actions/runs/38202794312) 运行；不要求用户在本机编译。交付限制和运行说明见 [桌面说明](desktop/README.md)。
+[下载 Windows 安装 EXE / ZIP 或 Linux ZIP](https://github.com/lilyco-42/mirage-tank/releases/tag/mirage-studio-v0.1.1-1950c4205118)。完整包免费，解压后双击使用。Windows 需要 WebView2，安装器暂未签名；Linux 使用 Ubuntu 24.04+ x64 本机浏览器。所有编译、构建、测试及安装验收只在 [GitHub Actions](https://github.com/lilyco-42/mirage-tank/actions/runs/38277715186) 运行；不要求用户在本机编译。0.1.1 补齐独立 Windows SDK 的完整许可及官方文件核对。交付限制和运行说明见 [桌面说明](desktop/README.md)。
 
 ## How It Works
 
