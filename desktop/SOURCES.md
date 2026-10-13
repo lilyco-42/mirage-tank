@@ -1,0 +1,2 @@
+
+Original Lyco application icon: lilyco-42/lyco-ip guidance 82f35f190129498f73ef7199075c3a1723adfe2d, retained resources/icon-source.json, PNG and separate IP notice. Packaging helper: original shared MIT source lilyco-42/lilyco 0f98b81f101ee962db12f2d600f8a8bba13ecdff apps/desktop-common/desktop_icons.py. Conversion and complete PE/native icon checks execute only in Actions; no design baseline images are redistributed.
